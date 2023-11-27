@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    image: twitter-emotion-webapp:latest
+    environment:
+      - SECRET_KEY=<some-secret-key>
+      - INFERENCE_API_TOKEN=<api-token>
+    ports:
+      - "8000:5000"
