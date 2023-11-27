@@ -1,6 +1,3 @@
-# twitter-emotion-webapp
-
-
 # Twitter Emotion Analysis - Webapp
 
 ![Static Badge](https://img.shields.io/badge/project%20type-personal-blue)
