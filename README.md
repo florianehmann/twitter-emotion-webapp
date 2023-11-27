@@ -18,16 +18,16 @@ Flask-based webapp that gives users a convenient way to perform an emotion analy
 To get a working development version of the app, you first need to create a virtual environments with the required packages
 
 ```bash
-    python -m venv venv
-    source venv/bin/activate
-    pip install -r requirements.txt
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
 
 You also need to specify your URL and API token for the Huggingface Inference API. Create a file named `.env` in the root directory of the repository and insert the following lines
 
 ```
-    INFERENCE_API_URL=<inference-api-url>
-    INFERENCE_API_TOKEN=<your-api-token>
+INFERENCE_API_URL=<inference-api-url>
+INFERENCE_API_TOKEN=<your-api-token>
 ```
 
 Beware, this file is ignored by git because it contains sensitive information, so you have to do this everytime you clone this repository.
@@ -35,5 +35,5 @@ Beware, this file is ignored by git because it contains sensitive information, s
 After that, you can run your local instance with
 
 ```bash
-    flask run
+flask run
 ```
