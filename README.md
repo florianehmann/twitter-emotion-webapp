@@ -10,6 +10,20 @@ Webapp Frontend for the [twitter-emotion](https://github.com/florianehmann/twitt
 
 Flask-based webapp that gives users a convenient way to perform an emotion analysis on tweets.
 
+## Running with Docker
+
+To run this app with docker, you first need to build the image with
+
+```bash
+docker-compose build
+```
+
+After that, you can use en edited version of the `docker-compose.yml` file with a random secret and your API key to run the app with
+
+```bash
+docker-compose up
+```
+
 ## Development
 
 To get a working development version of the app, you first need to create a virtual environments with the required packages
