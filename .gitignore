@@ -1,0 +1,10 @@
+# Secrets
+.env
+
+# Python
+venv
+.pytest_cache
+__pycache__
+
+# IDE
+.idea
