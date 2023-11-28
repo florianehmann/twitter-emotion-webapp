@@ -1,14 +1,14 @@
 FROM python:3.11-slim
 
 RUN useradd twitter-emotion
-
-WORKDIR /home/app
+WORKDIR /home/twitter-emotion
 
 COPY requirements.txt requirements.txt
 COPY app app
 COPY app_entry.py boot.sh ./
 RUN chmod +x boot.sh
-RUN chown -R twitter-emotion:twitter-emotion ./
+
+RUN chown -R twitter-emotion:twitter-emotion .
 
 USER twitter-emotion
 
