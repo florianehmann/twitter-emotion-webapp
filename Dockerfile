@@ -1,4 +1,4 @@
-LABEL org.opencontainers.image.source https://github.com/florianehmann/twitter-emotion-webapp
+LABEL org.opencontainers.image.source=https://github.com/florianehmann/twitter-emotion-webapp
 
 FROM python:3.11-slim
 
