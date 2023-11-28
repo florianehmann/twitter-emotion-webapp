@@ -3,6 +3,7 @@
 ![Static Badge](https://img.shields.io/badge/project%20type-personal-blue)
 ![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/florianehmann/twitter-emotion-webapp)
 ![GitHub top language](https://img.shields.io/github/languages/top/florianehmann/twitter-emotion-webapp)
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/florianehmann/twitter-emotion-webapp/pylint.yml)
 
 Webapp Frontend for the [twitter-emotion](https://github.com/florianehmann/twitter-emotion) Project
 
