@@ -1,12 +1,17 @@
+"""Endpoints of the base Module"""
+
+from flask import flash, render_template
+
 from app.base import bp
 from app.base.forms import QueryForm
 from app.inference import query_model, ModelQueryException
-from flask import flash, render_template
 
 
 @bp.route('/', methods=['GET', 'POST'])
 @bp.route('/index', methods=['GET', 'POST'])
 def index():
+    """Main Page with Form to Query the Classification Model"""
+
     form = QueryForm()
 
     render = None

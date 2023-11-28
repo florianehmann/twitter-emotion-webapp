@@ -1,6 +1,9 @@
+"""Main Module of the Webapp"""
+
 from flask import Flask
-from app.config import Config
 from flask_bootstrap import Bootstrap
+from app.base import bp as base_bp
+from app.config import Config
 
 bootstrap = Bootstrap()
 
@@ -13,7 +16,6 @@ def create_app(config_class=Config):
 
     bootstrap.init_app(app)
 
-    from app.base import bp as base_bp
     app.register_blueprint(base_bp)
 
     if app.debug or app.testing:
