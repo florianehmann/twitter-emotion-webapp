@@ -25,12 +25,20 @@ class ModelQueryException(Exception):
         super().__init__(self.message)
 
 
+class ModelLoadingException(Exception):
+    """Exception to Raise When the Model is Not Loaded Yet"""
+    def __init__(self):
+        super().__init__()
+
+
 def query_model(tweet: str) -> [List[dict]]:
     """Sends an API Request to the Hosted Model and Returns the Result in Usable Form"""
 
     response: Union[dict, List[List[dict]]] = requests.post(Config.INFERENCE_API_URL, headers=headers,
                                                             json={'inputs': tweet}, timeout=5).json()
     if isinstance(response, dict):
+        if "currently loading" in response['error']:
+            raise ModelLoadingException()
         raise ModelQueryException(response['error'])
 
     classifications = response[0]
