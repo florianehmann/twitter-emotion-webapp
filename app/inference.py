@@ -27,8 +27,6 @@ class ModelQueryException(Exception):
 
 class ModelLoadingException(Exception):
     """Exception to Raise When the Model is Not Loaded Yet"""
-    def __init__(self):
-        super().__init__()
 
 
 def query_model(tweet: str) -> [List[dict]]:
