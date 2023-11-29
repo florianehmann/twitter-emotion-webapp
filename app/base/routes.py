@@ -25,7 +25,7 @@ def index():
 
             render = render_template('base/index.html', form=form, tweet=tweet, emotion=emotion, confidence=confidence)
         except ModelQueryException as e:
-            flash(f"There was an error with model: {e}.")
+            flash(f"There was an error with the language model: {e}")
         except ModelLoadingException:
             flash("Model is currently loading, try again in 20 seconds.")
 

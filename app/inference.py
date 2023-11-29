@@ -32,8 +32,13 @@ class ModelLoadingException(Exception):
 def query_model(tweet: str) -> [List[dict]]:
     """Sends an API Request to the Hosted Model and Returns the Result in Usable Form"""
 
-    response: Union[dict, List[List[dict]]] = requests.post(Config.INFERENCE_API_URL, headers=headers,
-                                                            json={'inputs': tweet}, timeout=5).json()
+    try:
+        response: Union[dict, List[List[dict]]] = requests.post(Config.INFERENCE_API_URL, headers=headers,
+                                                                json={'inputs': tweet}, timeout=5).json()
+    except requests.exceptions.ConnectionError as e:
+        raise ModelQueryException("Can't connect to the model at the moment 🤔") from e
+
+    # got an error from HuggingFace
     if isinstance(response, dict):
         if "currently loading" in response['error']:
             raise ModelLoadingException()
