@@ -3,10 +3,6 @@ name: Docker Image CI
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-    types:
-      - closed
 
 env:
   REGISTRY: ghcr.io
@@ -14,7 +10,7 @@ env:
 
 jobs:
 
-  publish:
+  build:
 
     runs-on: ubuntu-latest
 
