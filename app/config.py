@@ -11,7 +11,7 @@ load_dotenv()
 class Config:
     """Contains the Configuration Variables for the App"""
 
-    GITHUB_URL = os.environ.get('GITHUB_URL') or "https://github.com/florianehmann/twitter-emotion"
+    GITHUB_URL = os.environ.get('GITHUB_URL') or "https://github.com/florianehmann/twitter-emotion-webapp"
     SECRET_KEY = os.environ.get('SECRET_KEY') or "twitter-emotion-secret"
     INFERENCE_API_TOKEN = os.environ.get('INFERENCE_API_TOKEN') or "api_token"
     INFERENCE_API_URL = (os.environ.get('INFERENCE_API_URL')
