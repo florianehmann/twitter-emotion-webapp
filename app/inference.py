@@ -1,6 +1,10 @@
-from app.config import Config
-import requests
+"""Functionality for the Emotion Inference Using the Classification Model"""
+
 from typing import Union, List
+
+import requests
+
+from app.config import Config
 
 
 headers = {"Authorization": f"Bearer {Config.INFERENCE_API_TOKEN}"}
@@ -15,15 +19,29 @@ LABEL_NAMES = {
 
 
 class ModelQueryException(Exception):
+    """Exception for Unspecified Problems while Querying the Model"""
     def __init__(self, message: str):
         self.message = message
         super().__init__(self.message)
 
 
+class ModelLoadingException(Exception):
+    """Exception to Raise When the Model is Not Loaded Yet"""
+
+
 def query_model(tweet: str) -> [List[dict]]:
-    response: Union[dict, List[List[dict]]] = requests.post(Config.INFERENCE_API_URL, headers=headers,
-                                                            json={'inputs': tweet}).json()
+    """Sends an API Request to the Hosted Model and Returns the Result in Usable Form"""
+
+    try:
+        response: Union[dict, List[List[dict]]] = requests.post(Config.INFERENCE_API_URL, headers=headers,
+                                                                json={'inputs': tweet}, timeout=5).json()
+    except requests.exceptions.ConnectionError as e:
+        raise ModelQueryException("Can't connect to the model at the moment 🤔") from e
+
+    # got an error from HuggingFace
     if isinstance(response, dict):
+        if "currently loading" in response['error']:
+            raise ModelLoadingException()
         raise ModelQueryException(response['error'])
 
     classifications = response[0]

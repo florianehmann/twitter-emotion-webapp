@@ -4,4 +4,4 @@ from flask import Blueprint
 
 bp = Blueprint('base', __name__)
 
-from app.base import routes
+from app.base import routes  # pylint: disable=wrong-import-position

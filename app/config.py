@@ -1,13 +1,19 @@
-from dotenv import load_dotenv
+"""Loads and Contains the Configuration Variables for the Entire App"""
+
 import os
-# basedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..')
+
+from dotenv import load_dotenv
+
 load_dotenv()
 
 
+# pylint: disable=too-few-public-methods
 class Config:
-    GITHUB_URL = os.environ.get('GITHUB_URL') or "https://github.com/florianehmann/twitter-emotion"
+    """Contains the Configuration Variables for the App"""
+
+    GITHUB_URL = os.environ.get('GITHUB_URL') or "https://github.com/florianehmann/twitter-emotion-webapp"
     SECRET_KEY = os.environ.get('SECRET_KEY') or "twitter-emotion-secret"
     INFERENCE_API_TOKEN = os.environ.get('INFERENCE_API_TOKEN') or "api_token"
     INFERENCE_API_URL = (os.environ.get('INFERENCE_API_URL')
-                         or "https://api-inference.huggingface.co/models/"
+                         or "https://aapi-inference.huggingface.co/models/"
                             "florianehmann/distilbert-base-uncased-finetuned-emotion")
