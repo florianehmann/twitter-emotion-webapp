@@ -15,5 +15,5 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or "twitter-emotion-secret"
     INFERENCE_API_TOKEN = os.environ.get('INFERENCE_API_TOKEN') or "api_token"
     INFERENCE_API_URL = (os.environ.get('INFERENCE_API_URL')
-                         or "https://aapi-inference.huggingface.co/models/"
+                         or "https://api-inference.huggingface.co/models/"
                             "florianehmann/distilbert-base-uncased-finetuned-emotion")
