@@ -1,15 +1,21 @@
 """Test the Functionality of the Base Module of the App"""
-from app import create_app
+
 import unittest
 
+from app import create_app
 
+
+# pylint: disable=too-few-public-methods
 class TestConfig:
+    """Override Config for Testing Purposes"""
     TESTING = True
     SECRET_KEY = 'test-key'
 
 
 class BaseTest(unittest.TestCase):
+    """Test the Most Basic Functionalities of the App"""
 
+    # pylint: disable=missing-function-docstring
     def setUp(self) -> None:
         self.app = create_app(TestConfig)
         self.app_context = self.app.app_context()
