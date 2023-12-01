@@ -38,7 +38,7 @@ def set_up_logging(app):
 
     # application logging
 
-    log_level = logging.DEBUG if app.debug or app.testing else logging.info
+    log_level = logging.DEBUG if app.debug or app.testing else logging.INFO
     if app.config['LOG_TO_STDOUT']:
         stream_handler = logging.StreamHandler()
         app.logger.addHandler(stream_handler)
