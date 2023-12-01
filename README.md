@@ -13,13 +13,13 @@ Flask-based webapp that gives users a convenient way to perform an emotion analy
 
 ## Running with Docker
 
-To run this app with docker, you first need to build the image with
+To run this app with docker, you first need to build the image using
 
 ```bash
-docker-compose build
+docker build .
 ```
 
-After that, you can use en edited version of the `docker-compose.yml` file with a random secret and your API key to run the app with
+After that, you can use an edited version of the `deployment/docker/docker-compose.yml` file with the appropriate image, a random secret and your API key to run the app with
 
 ```bash
 docker-compose up

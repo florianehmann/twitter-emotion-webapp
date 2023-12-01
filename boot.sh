@@ -1,4 +1,4 @@
 #!/bin/bash
 
 source venv/bin/activate
-exec gunicorn -b :5000 --access-logfile - --error-logfile - app_entry:app
+exec gunicorn app_entry:app
