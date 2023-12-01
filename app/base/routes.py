@@ -1,6 +1,6 @@
 """Endpoints of the base Module"""
 
-from flask import current_app, flash, render_template
+from flask import current_app, flash, render_template, request
 
 from app.base import bp
 from app.base.forms import QueryForm
@@ -18,8 +18,10 @@ def index():
     if form.validate_on_submit():
         try:
             tweet = form.tweet_text.data.strip()
-            current_app.query_logger.info(f"\"{tweet}\"")
+            remote_ip = request.headers.get('X_Forwarded-For') or '<X-Forwarded-For>'
+            current_app.query_logger.info(f"{remote_ip} - \"{tweet}\"")
             current_app.logger.debug(f"Querying model on \"{tweet}\"")
+
             classifications = query_model(tweet)
             emotion = classifications[0]['label']
             confidence = f"{classifications[0]['score'] * 100:.1f}"
