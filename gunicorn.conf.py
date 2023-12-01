@@ -1,4 +1,5 @@
 """Configuration of the Gunicorn WSGI Server"""
+# pylint: disable=invalid-name
 
 wsgi_app = 'app_entry:app'
 
