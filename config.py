@@ -17,3 +17,4 @@ class Config:
     INFERENCE_API_URL = (os.environ.get('INFERENCE_API_URL')
                          or "https://api-inference.huggingface.co/models/"
                             "florianehmann/distilbert-base-uncased-finetuned-emotion")
+    LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')

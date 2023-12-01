@@ -4,7 +4,7 @@ from typing import Union, List
 
 import requests
 
-from app.config import Config
+from config import Config
 
 
 headers = {"Authorization": f"Bearer {Config.INFERENCE_API_TOKEN}"}
