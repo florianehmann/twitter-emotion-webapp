@@ -3,7 +3,8 @@
 ![Static Badge](https://img.shields.io/badge/project%20type-personal-blue)
 ![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/florianehmann/twitter-emotion-webapp)
 ![GitHub top language](https://img.shields.io/github/languages/top/florianehmann/twitter-emotion-webapp)
-[![Pylint](https://github.com/florianehmann/twitter-emotion-webapp/actions/workflows/pylint.yml/badge.svg)](https://github.com/florianehmann/twitter-emotion-webapp/actions/workflows/pylint.yml)
+[![Lint/Test](https://github.com/florianehmann/twitter-emotion-webapp/actions/workflows/python-lint-test.yml/badge.svg)](https://github.com/florianehmann/twitter-emotion-webapp/actions/workflows/python-lint-test.yml)
+[![Docker Image Build](https://github.com/florianehmann/twitter-emotion-webapp/actions/workflows/docker-image.yml/badge.svg)](https://github.com/florianehmann/twitter-emotion-webapp/actions/workflows/docker-image.yml)
 
 Webapp Frontend for the [twitter-emotion](https://github.com/florianehmann/twitter-emotion) Project
 
