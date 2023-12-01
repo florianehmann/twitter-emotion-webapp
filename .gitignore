@@ -1,6 +1,9 @@
 # Secrets
 .env
 
+# Application
+logs
+
 # Python
 venv
 .pytest_cache

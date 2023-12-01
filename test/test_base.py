@@ -3,13 +3,10 @@
 import unittest
 
 from app import create_app
+from config import Config
 
 
-# pylint: disable=too-few-public-methods
-class TestConfig:
-    """Override Config for Testing Purposes"""
-    TESTING = True
-    SECRET_KEY = 'test-key'
+Config.TESTING = True
 
 
 class BaseTest(unittest.TestCase):
@@ -17,7 +14,7 @@ class BaseTest(unittest.TestCase):
 
     # pylint: disable=missing-function-docstring
     def setUp(self) -> None:
-        self.app = create_app(TestConfig)
+        self.app = create_app(Config)
         self.app_context = self.app.app_context()
         self.app_context.push()
 
