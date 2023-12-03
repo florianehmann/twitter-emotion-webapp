@@ -6,10 +6,15 @@ from logging.handlers import RotatingFileHandler
 
 from flask import Flask
 from flask_bootstrap import Bootstrap
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
+
 from app.base import bp as base_bp
 from config import Config
 
 bootstrap = Bootstrap()
+db = SQLAlchemy()
+migrate = Migrate()
 
 
 def create_app(config_class=Config):
@@ -19,6 +24,8 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     bootstrap.init_app(app)
+    db.init_app(app)
+    migrate.init_app(app, db)
 
     app.register_blueprint(base_bp)
 
@@ -61,3 +68,6 @@ def set_up_logging(app):
         file_handler = RotatingFileHandler('logs/queries.log', maxBytes=10000, backupCount=10)
         file_handler.setFormatter(logging.Formatter("[%(asctime)s QUERY]: %(message)s"))
         app.query_logger.addHandler(file_handler)
+
+
+from app import models  # pylint: disable=wrong-import-position,ungrouped-imports

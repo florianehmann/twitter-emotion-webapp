@@ -3,6 +3,7 @@
 
 # Application
 logs
+app.db
 
 # Python
 venv
