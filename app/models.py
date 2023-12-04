@@ -17,7 +17,7 @@ class Tweet(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     text: so.Mapped[str] = so.mapped_column(sa.String(256), unique=True)
 
-    model_queries: so.WriteOnlyMapped['UserQuery'] = so.relationship('UserQuery', back_populates='tweet')
+    user_queries: so.WriteOnlyMapped['UserQuery'] = so.relationship('UserQuery', back_populates='tweet')
     model_response: so.Mapped['ModelResponse'] = so.relationship('ModelResponse', back_populates='tweet')
 
     def __repr__(self):
@@ -35,7 +35,7 @@ class UserQuery(db.Model):
     user_ip: so.Mapped[str] = so.mapped_column(sa.String(16))
     timestamp: so.Mapped[datetime] = so.mapped_column(index=True, default=lambda: datetime.now(timezone.utc))
 
-    tweet: so.Mapped[Tweet] = so.relationship('Tweet', back_populates='model_queries')
+    tweet: so.Mapped[Tweet] = so.relationship('Tweet', back_populates='user_queries')
 
     def __repr__(self):
         wrapped_content = shorten(self.tweet.text, 40)

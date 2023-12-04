@@ -20,7 +20,7 @@ class DBTest(unittest.TestCase):
         class TestConfig(Config):  # pylint: disable=too-few-public-methods
             """Override Config for this Specific TestCase"""
             TESTING = True
-            SQLALCHEMY_DATABASE_URI = 'sqlite:///' + temp_db_file
+            SQLALCHEMY_DATABASE_URI = 'sqlite:///' + temp_db_file + '.db'
 
         self.app = create_app(TestConfig)
         self.app_context = self.app.app_context()
@@ -32,14 +32,14 @@ class DBTest(unittest.TestCase):
     def populate_db(self):
         """Populate Database with Test Data"""
 
-        self.tweet_text = "tweet text"
-        self.model_response_content = {'emotion': 0.43678}
+        tweet_text = "tweet text"
+        model_response_content = {'emotion': 0.43678}
 
-        tweet = models.Tweet(text=self.tweet_text)
-        user_query = models.UserQuery(tweet=tweet, user_ip="127.0.0.1")
-        model_response = models.ModelResponse(tweet=tweet, content=self.model_response_content)
+        self.tweet = models.Tweet(text=tweet_text)
+        self.user_query = models.UserQuery(tweet=self.tweet, user_ip="127.0.0.1")
+        self.model_response = models.ModelResponse(tweet=self.tweet, content=model_response_content)
 
-        db.session.add_all([tweet, user_query, model_response])
+        db.session.add_all([self.tweet, self.user_query, self.model_response])
         db.session.commit()
 
     def tearDown(self) -> None:
@@ -48,4 +48,29 @@ class DBTest(unittest.TestCase):
     def test_reading_tweet(self):
         """Read a Tweet from the Database and Math the Text"""
         tweet = db.session.scalar(sa.select(models.Tweet))
-        self.assertEqual(self.tweet_text, tweet.text)
+        self.assertEqual(self.tweet.text, tweet.text)
+
+    def test_user_query_backref(self):
+        """Read a UserQuery from the database and see if it has the right Tweet in the tweet field"""
+        tweet = db.session.scalar(sa.select(models.Tweet))
+        user_query = db.session.scalar(sa.select(models.UserQuery))
+
+        self.assertEqual(tweet.id, user_query.tweet.id)
+
+    def test_model_response_backref(self):
+        """Read a ModelResponse from the database and see if it has the right Tweet in the tweet field"""
+        tweet = db.session.scalar(sa.select(models.Tweet))
+        model_response = db.session.scalar(sa.select(models.ModelResponse))
+
+        self.assertEqual(tweet.id, model_response.tweet.id)
+
+    def test_tweet_backref(self):
+        """Read a ModelResponse from the database and see if it has the right Tweet in the tweet field"""
+        tweet = db.session.scalar(sa.select(models.Tweet))
+        user_query = db.session.scalar(sa.select(models.UserQuery))
+        model_response = db.session.scalar(sa.select(models.ModelResponse))
+
+        backref_user_query = db.session.scalar(tweet.user_queries.select())
+        self.assertEqual(user_query.id, backref_user_query.id)
+
+        self.assertEqual(model_response.id, tweet.model_response.id)
