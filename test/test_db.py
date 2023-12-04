@@ -1,5 +1,6 @@
 """Test the Functionality of the Base Module of the App"""
 
+import os
 import tempfile
 import unittest
 
@@ -9,28 +10,36 @@ from app import create_app, db
 from app import models
 from config import Config
 
+# temp_db_file = tempfile.NamedTemporaryFile()  # pylint: disable=consider-using-with
+# SQLALCHEMY_DATABASE_URI = 'sqlite:///' + temp_db_file.name + '.db'
+
 
 class DBTest(unittest.TestCase):
-    """Test the Database Functionalities of the App"""
+    """Test the database functionalities of the app"""
 
-    def setUp(self) -> None:
-        """Creates a Temporary Database and Initializes the App"""
-        temp_db_file = tempfile.NamedTemporaryFile().name  # pylint: disable=consider-using-with
+    @classmethod
+    def setUpClass(cls) -> None:
+        """Create temporary database file and app"""
+
+        cls.temp_db_file = tempfile.NamedTemporaryFile()
+        cls.temp_db_file_name = cls.temp_db_file.name + '.db'
 
         class TestConfig(Config):  # pylint: disable=too-few-public-methods
-            """Override Config for this Specific TestCase"""
+            """Override Config for this specific TestCase"""
             TESTING = True
-            SQLALCHEMY_DATABASE_URI = 'sqlite:///' + temp_db_file + '.db'
+            SQLALCHEMY_DATABASE_URI = 'sqlite:///' + cls.temp_db_file_name
 
-        self.app = create_app(TestConfig)
-        self.app_context = self.app.app_context()
-        self.app_context.push()
+        app = create_app(TestConfig)
+        app_context = app.app_context()
+        app_context.push()
 
+    def setUp(self) -> None:
+        """Initialize temporary database and populate it with test data"""
         db.create_all()
         self.populate_db()
 
     def populate_db(self):
-        """Populate Database with Test Data"""
+        """Populate database with test data"""
 
         tweet_text = "tweet text"
         model_response_content = {'emotion': 0.43678}
@@ -43,10 +52,16 @@ class DBTest(unittest.TestCase):
         db.session.commit()
 
     def tearDown(self) -> None:
+        """Clear test database"""
         db.drop_all()
 
+    @classmethod
+    def tearDownClass(cls) -> None:
+        """Delete temporary database file"""
+        os.remove(cls.temp_db_file_name)
+
     def test_reading_tweet(self):
-        """Read a Tweet from the Database and Math the Text"""
+        """Read a Tweet from the database and match the text"""
         tweet = db.session.scalar(sa.select(models.Tweet))
         self.assertEqual(self.tweet.text, tweet.text)
 
