@@ -4,7 +4,7 @@ import sqlalchemy as sa
 import sqlalchemy.orm as so
 
 from app import create_app
-from app.models import ModelResponse, UserQuery, Tweet
+from app.models import UserRequest
 from config import Config
 
 
@@ -14,4 +14,4 @@ app = create_app(Config)
 @app.shell_context_processor
 def make_shell_context():
     """Define the Available Identifiers for the `flask shell` Context"""
-    return {'sa': sa, 'so': so, 'ModelResponse': ModelResponse, 'UserQuery': UserQuery, 'Tweet': Tweet}
+    return {'sa': sa, 'so': so, 'UserRequest': UserRequest}
