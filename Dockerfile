@@ -17,8 +17,6 @@ RUN venv/bin/pip install --upgrade pip
 RUN venv/bin/pip install -r requirements.txt
 RUN venv/bin/pip install gunicorn
 
-RUN flask db upgrade
-
 ENV FLASK_APP app_entry.py
 
 EXPOSE 5000
