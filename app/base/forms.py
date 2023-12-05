@@ -1,7 +1,7 @@
 """Forms of the base Module"""
 
 from flask_wtf import FlaskForm
-from wtforms import TextAreaField, SubmitField
+from wtforms import SelectField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Length
 
 
@@ -14,4 +14,13 @@ class QueryForm(FlaskForm):
 
     tweet_text = TextAreaField(validators=[DataRequired(), Length(max=280, message=TWEET_TOO_LONG_MSG)],
                                render_kw={'maxlength': MAX_TWEET_LEN, 'rows': 3, 'cols': 100})
+    user_classification = SelectField(choices=[
+        ('None', ''),
+        ('sadness', 'Sadness'),
+        ('joy', 'Joy'),
+        ('love', 'Love'),
+        ('anger', 'Anger'),
+        ('fear', 'Fear'),
+        ('surprise', 'Surprise'),
+    ], label='What would you say? (optional)')
     submit = SubmitField('Analyze!')
