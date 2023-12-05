@@ -9,7 +9,6 @@ from flask_bootstrap import Bootstrap
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
-from app.base import bp as base_bp
 from config import Config
 
 bootstrap = Bootstrap()
@@ -27,6 +26,9 @@ def create_app(config_class=Config):
     db.init_app(app)
     migrate.init_app(app, db)
 
+    # blueprint imports inside the factory to prevent cyclic imports
+
+    from app.base import bp as base_bp
     app.register_blueprint(base_bp)
 
     set_up_logging(app)
