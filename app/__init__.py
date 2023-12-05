@@ -16,6 +16,7 @@ db = SQLAlchemy()
 migrate = Migrate()
 
 
+# pylint: disable=import-outside-toplevel
 def create_app(config_class=Config):
     """Create an Instance of the App"""
 
