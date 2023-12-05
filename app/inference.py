@@ -30,7 +30,7 @@ class ModelLoadingException(Exception):
 
 
 def query_model(tweet: str) -> [List[dict]]:
-    """Sends an API Request to the Hosted Model and Returns the Result in Usable Form"""
+    """Sends an API request to the hosted model and returns the result in usable form"""
 
     try:
         response: Union[dict, List[List[dict]]] = requests.post(Config.INFERENCE_API_URL, headers=headers,
@@ -49,5 +49,8 @@ def query_model(tweet: str) -> [List[dict]]:
     # replace model labels with human-readable names
     for classification in classifications:
         classification['label'] = LABEL_NAMES[classification['label']]
+
+    # sort classifications by score in descending order
+    classifications = sorted(classifications, key=lambda c: c['score'], reverse=True)
 
     return classifications
