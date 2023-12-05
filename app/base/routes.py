@@ -2,9 +2,11 @@
 
 from flask import current_app, flash, render_template, request
 
+from app import db
 from app.base import bp
 from app.base.forms import QueryForm
 from app.inference import query_model, ModelLoadingException, ModelQueryException
+from app.models import UserRequest
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -17,26 +19,43 @@ def index():
 
     render = None
     if form.validate_on_submit():
-        tweet_text = form.tweet_text.data
-        user_ip = request.headers.get('<X-Forwarded-For>') or 'unavailable'
-
-        try:
-            classifications = query_model(tweet_text)
-            log_user_request(tweet_text, user_ip)
-            render = render_result(tweet_text, classifications, common_kwargs)
-
-        except ModelQueryException as e:
-            current_app.logger.error(f"Language Model Error: {e}")
-            flash(f"There was an error with the language model: {e}")
-
-        except ModelLoadingException:
-            current_app.logger.warning("Language model currently loading")
-            flash("Model is currently loading, try again in 20 seconds.")
+        render = process_user_request(form, common_kwargs)
 
     if render is None:
         render = render_template('base/index.html', **common_kwargs)
 
     return render
+
+
+def process_user_request(form, common_kwargs):
+    """Query the model, log the request and generate the response HTML"""
+
+    render = None
+    tweet_text = form.tweet_text.data
+    user_ip = request.headers.get('<X-Forwarded-For>') or 'unavailable'
+
+    try:
+        classifications = query_model(tweet_text)
+        log_user_request(tweet_text, user_ip)
+        store_request_in_database(tweet_text, user_ip)
+        render = render_result(tweet_text, classifications, common_kwargs)
+
+    except ModelQueryException as e:
+        current_app.logger.error(f"Language Model Error: {e}")
+        flash(f"There was an error with the language model: {e}")
+
+    except ModelLoadingException:
+        current_app.logger.warning("Language model currently loading")
+        flash("Model is currently loading, try again in 20 seconds.")
+
+    return render
+
+
+def store_request_in_database(tweet_text, user_ip):
+    # pylint: disable=missing-function-docstring
+    user_request = UserRequest(tweet_text=tweet_text, user_ip=user_ip)
+    db.session.add(user_request)
+    db.session.commit()
 
 
 def render_result(tweet_text, classifications, common_kwargs):
@@ -49,7 +68,7 @@ def render_result(tweet_text, classifications, common_kwargs):
     return render
 
 
-# pylint: disable=missing-function-docstring
 def log_user_request(tweet_text, user_ip):
+    # pylint: disable=missing-function-docstring
     current_app.query_logger.info(f"{user_ip} - \"{tweet_text}\"")
     current_app.logger.debug(f"Querying model on \"{tweet_text}\"")
