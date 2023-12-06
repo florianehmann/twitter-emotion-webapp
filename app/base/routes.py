@@ -33,7 +33,7 @@ def process_user_request(form, common_kwargs):
     render = None
     tweet_text = form.tweet_text.data
     user_classification = form.user_classification.data
-    user_ip = request.headers.get('<X-Forwarded-For>') or 'unavailable'
+    user_ip = request.headers.get('X-Forwarded-For') or 'unavailable'
 
     try:
         classifications = query_model(tweet_text)
