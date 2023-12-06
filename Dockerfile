@@ -5,6 +5,7 @@ WORKDIR /home/twitter-emotion
 
 COPY requirements.txt requirements.txt
 COPY app app
+COPY migrations migrations
 COPY app_entry.py gunicorn.conf.py boot.sh config.py ./
 RUN chmod +x boot.sh
 
