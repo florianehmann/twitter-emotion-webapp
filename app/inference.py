@@ -8,14 +8,6 @@ from config import Config
 
 
 headers = {"Authorization": f"Bearer {Config.INFERENCE_API_TOKEN}"}
-LABEL_NAMES = {
-    'LABEL_0': 'sadness',
-    'LABEL_1': 'joy',
-    'LABEL_2': 'love',
-    'LABEL_3': 'anger',
-    'LABEL_4': 'fear',
-    'LABEL_5': 'surprise',
-}
 
 
 class ModelQueryException(Exception):
@@ -45,10 +37,6 @@ def query_model(tweet: str) -> [List[dict]]:
         raise ModelQueryException(response['error'])
 
     classifications = response[0]
-
-    # replace model labels with human-readable names
-    for classification in classifications:
-        classification['label'] = LABEL_NAMES[classification['label']]
 
     # sort classifications by score in descending order
     classifications = sorted(classifications, key=lambda c: c['score'], reverse=True)
