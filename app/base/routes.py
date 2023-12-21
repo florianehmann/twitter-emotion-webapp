@@ -1,6 +1,8 @@
 """Endpoints of the base Module"""
 
 from flask import current_app, flash, render_template, request
+import iso639
+import langdetect
 
 from app import db
 from app.base import bp
@@ -35,6 +37,13 @@ def process_user_request(form, common_kwargs):
     user_classification = form.user_classification.data
     user_ip = request.headers.get('X-Forwarded-For') or 'unavailable'
 
+    # TODO experimenting here
+    lang_code = langdetect.detect(tweet_text)
+    lang = get_language_name(lang_code)
+    flash(f"Detected Tweet Language: {lang}")
+    lang_detection = langdetect.detect_langs(tweet_text)
+    flash(f"Detected Tweet Languages: {lang_detection}")
+
     try:
         classifications = query_model(tweet_text)
         log_user_request(tweet_text, user_ip)
@@ -50,6 +59,11 @@ def process_user_request(form, common_kwargs):
         flash("Model is currently loading, try again in 20 seconds.")
 
     return render
+
+
+def get_language_name(code: str) -> str:
+    """Converts an ISO 639-1 code to the english name of the language."""
+    return iso639.Language.from_part1(code).name
 
 
 def store_request_in_database(tweet_text, user_ip, user_classification: str):
