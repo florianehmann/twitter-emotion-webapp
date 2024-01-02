@@ -29,6 +29,7 @@ def index():
 
 @bp.route('/privacy')
 def privacy():
+    """Privacy statement of the site"""
     return render_template('base/privacy.html')
 
 
