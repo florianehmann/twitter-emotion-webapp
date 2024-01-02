@@ -27,6 +27,11 @@ def index():
     return render
 
 
+@bp.route('/privacy')
+def privacy():
+    return render_template('base/privacy.html')
+
+
 def process_user_request(form, common_kwargs):
     """Query the model, log the request and generate the response HTML"""
 
