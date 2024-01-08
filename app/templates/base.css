@@ -1,0 +1,35 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    width: 100%;
+    background-color: #f8f9fa;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.spacer {
+    margin-top: 3em;
+}
+
+.blockquote {
+    position: relative;
+    padding-left: 10px; /* Space for the vertical rule */
+}
+
+.blockquote::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 100%;
+    background-color: gray;
+}

@@ -1,49 +1,59 @@
-{% extends 'bootstrap/base.html' %}
+<!doctype html>
+<html lang="en">
+<head>
+  {% block head %}
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-{% block title %}
+  {% block styles %}
+    <style>
+      {% include 'base.css' %}
+     </style>
+
+    <!-- Bootstrap CSS -->
+    {{ bootstrap.load_css() }}
+  {% endblock %}
+
+  <title>
     {% if title %}
     {{ title }}
     {% else %}
     Feel the Tweet
     {% endif %}
-{% endblock %}
+  </title>
 
-{% block navbar %}
-    <nav class="navbar navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{{ url_for('base.index') }}">Feel the Tweet</a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('base.index') }}"></a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{{ url_for('base.privacy') }}" target="new">Privacy Statement</a></li>
-                    <li><a href="{{ config['GITHUB_URL'] }}" target="new">Github</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-{% endblock %}
+  {% endblock %}
+</head>
+<body>
+  {% include 'navbar.html' %}
 
-{% block content %}
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-info" role="alert">{{ message }}</div>
+      {% endfor %}
+    {% else %}
+      <div class="spacer"></div>
+    {% endif %}
+  {% endwith %}
+
+  <main>
     <div class="container">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-info" role="alert">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-        {% endwith %}
-
+      <div class="content">
         {% block app_content %}{% endblock %}
+      </div>
     </div>
-{% endblock %}
+  </main>
+
+  {% include 'footer.html' %}
+
+  {% block scripts %}
+  <script>
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+  </script>
+  <!-- Optional JavaScript -->
+  {{ bootstrap.load_js() }}
+  {% endblock %}
+</body>
+</html>
