@@ -44,6 +44,12 @@ INFERENCE_API_TOKEN=<your-api-token>
 
 Beware, this file is ignored by git because it contains sensitive information, so you have to do this everytime you clone this repository.
 
+To initialize the database run
+
+```bash
+flask db upgrade
+```
+
 After that, you can run your local instance with
 
 ```bash
