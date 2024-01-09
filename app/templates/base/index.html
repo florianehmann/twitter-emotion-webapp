@@ -1,45 +1,36 @@
 {% extends "base.html" %}
-{% import 'bootstrap/wtf.html' as wtf %}
+{% from 'bootstrap5/form.html' import render_form %}
 
 {% block app_content %}
-    <h1>Hi There 👋,</h1>
 
-    <div class="row">
-        <div class="col-md-4">
-            <p>
-                Here you can ask an AI model to guess the emotion in a tweet!
-                The tweets can be in any language you like but the model is trained on english tweets,
-                so it should be most accurate on those.
-            </p>
-            <p>
-                Please do not enter any personal information and acknowledge our
-                <a href="{{ url_for('base.privacy') }}">privacy statement</a>.
-            </p>
-        </div>
-    </div>
+<h1>Hi There 👋,</h1>
 
+<p>
+  Here you can ask an AI model to guess the emotion in a tweet!
+  The tweets can be in any language you like but the model is trained on english tweets,
+  so it should be most accurate on those.
+</p>
+<p>
+  Please do not enter any personal information and acknowledge our
+  <a href="{{ url_for('base.privacy') }}">privacy statement</a>.
+</p>
 
-    <div class="row">
-        <div class="col-md-4">
-            {{ wtf.quick_form(form) }}
-        </div>
-    </div>
+{{ render_form(form) }}
 
 {% if tweet %}
-    <div class="row justify-content-center">
-        <div class="col-md-4">
-            <h2>Analysis Results</h2>
-            <p>
-                The Tweet
-            </p>
-            <blockquote class="blockquote">
-                {{ tweet }}
-            </blockquote>
-            <p>
-                was classified into the category <b>{{ emotion }}</b> with a confidence of <i>{{ confidence }}%</i>.
-            </p>
-        </div>
-    </div>
+<div class="spacer"></div>
+<h2>Analysis Results</h2>
+<p>
+  The Tweet
+</p>
+<div class="container">
+  <div class="blockquote">
+    <p class="p-2">{{ tweet }}</p>
+  </div>
+</div>
+<p>
+  was classified into the category <b>{{ emotion }}</b> with a confidence of <i>{{ confidence }}%</i>.
+</p>
 {% endif %}
 
 {% endblock %}

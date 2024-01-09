@@ -5,13 +5,13 @@ import os.path
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask
-from flask_bootstrap import Bootstrap
+from flask_bootstrap import Bootstrap5
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
 from config import Config
 
-bootstrap = Bootstrap()
+bootstrap = Bootstrap5()
 db = SQLAlchemy()
 migrate = Migrate()
 
