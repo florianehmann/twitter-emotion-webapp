@@ -1,10 +1,22 @@
 """Functionality of the query page"""
 
 from flask import request, current_app, flash, render_template
+from markupsafe import Markup
+import plotly
+import plotly.express as px
 
 from app import db
 from app.inference import query_model, ModelQueryException, ModelLoadingException
 from app.models import EMOTION_INDEX, UserRequest
+
+PLOT_COLOR = {
+    'joy': 'orange',
+    'anger': 'red',
+    'sadness': 'blue',
+    'love': 'pink',
+    'surprise': 'green',
+    'fear': 'purple',
+}
 
 
 def process_user_request(form, common_kwargs):
@@ -51,6 +63,22 @@ def render_result(tweet_text, classifications, common_kwargs):
 
     emotion = classifications[0]['label']
     confidence = f"{classifications[0]['score'] * 100:.1f}"
-    render = render_template('base/index.html', tweet=tweet_text, emotion=emotion,
+    radar_plot = generate_plot(classifications)
+    render = render_template('base/index.html', tweet=tweet_text, emotion=emotion, plot=radar_plot,
                              confidence=confidence, **common_kwargs)
     return render
+
+
+def generate_plot(classifications):
+    """Generate a radar plot based on the scores for each label"""
+    color = PLOT_COLOR[classifications[0]['label']]
+    data = {
+        'score': [row['score'] for row in classifications],
+        'label': [row['label'] for row in classifications],
+    }
+
+    fig = px.line_polar(data, r='score', theta='label', line_close=False, hover_data='label',
+                        color_discrete_sequence=[color], line_shape='spline')
+    fig.update_traces(fill='toself')
+
+    return Markup(plotly.io.to_html(fig, full_html=False, div_id='plot', include_plotlyjs='cdn'))

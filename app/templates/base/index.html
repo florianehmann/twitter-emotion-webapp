@@ -5,15 +5,17 @@
 
 <h1>Hi There 👋,</h1>
 
-<p>
+<p align="justify">
   Here you can ask an AI model to guess the emotion in a tweet!
   The tweets can be in any language you like but the model is trained on english tweets,
   so it should be most accurate on those.
 </p>
-<p>
+<p align="justify">
   Please do not enter any personal information and acknowledge our
   <a href="{{ url_for('base.privacy') }}">privacy statement</a>.
 </p>
+
+<div class="spacer"></div>
 
 {{ render_form(form) }}
 
@@ -28,9 +30,18 @@
     <p class="p-2">{{ tweet }}</p>
   </div>
 </div>
-<p>
+<p align="justify">
   was classified into the category <b>{{ emotion }}</b> with a confidence of <i>{{ confidence }}%</i>.
+
+  {% if plot %}
+  In more detail, the distribution over the categories looks like this:
+  {% endif  %}
 </p>
+
+{% if plot %}
+{{ plot }}
+{% endif %}
+
 {% endif %}
 
 {% endblock %}
