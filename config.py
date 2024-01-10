@@ -21,3 +21,4 @@ class Config:
                          or "https://api-inference.huggingface.co/models/"
                             "florianehmann/xlm-roberta-base-finetuned-emotion")
     LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
+    LINKEDIN_URL = os.environ.get('LINKEDIN_URL') or ""
