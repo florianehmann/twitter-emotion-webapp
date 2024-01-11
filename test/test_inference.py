@@ -24,12 +24,15 @@ class SuccessfulResponseMock:  # pylint: disable=too-few-public-methods
 
 class ModelLoadingResponseMock:  # pylint: disable=too-few-public-methods
     """Mocks the "model loading" response to an API call"""
-    @staticmethod
-    def json():  # pylint: disable=missing-function-docstring
-        return {
-            'error': 'Model ... is currently loading',
-            'estimated_time': 44.48772048950195
-        }
+
+    content = {
+        'error': 'Model ... is currently loading',
+        'estimated_time': 44.48772048950195
+    }
+
+    @classmethod
+    def json(cls):  # pylint: disable=missing-function-docstring
+        return cls.content
 
 
 class InferenceTest(unittest.TestCase):
@@ -49,8 +52,11 @@ class InferenceTest(unittest.TestCase):
     @patch("requests.post", new=create_autospec(requests.post, return_value=ModelLoadingResponseMock()))
     def test_model_loading(self):
         """Test if a ModelLoadingException is raised"""
-        with self.assertRaises(ModelLoadingException):
+
+        with self.assertRaises(ModelLoadingException) as cm:
             query_model("test tweet")
+
+        self.assertAlmostEqual(ModelLoadingResponseMock.content['estimated_time'], cm.exception.time_estimate)
 
     @patch("requests.post", new=create_autospec(requests.post, return_value=SuccessfulResponseMock()))
     def test_successful_response(self):

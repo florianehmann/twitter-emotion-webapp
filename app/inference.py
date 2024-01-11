@@ -19,6 +19,9 @@ class ModelQueryException(Exception):
 
 class ModelLoadingException(Exception):
     """Exception to Raise When the Model is Not Loaded Yet"""
+    def __init__(self, time_estimate: float):
+        self.time_estimate = time_estimate
+        super().__init__()
 
 
 def normalize_input(tweet: str) -> str:
@@ -40,7 +43,8 @@ def query_model(tweet: str) -> [List[dict]]:
     # got an error from HuggingFace
     if isinstance(response, dict):
         if "currently loading" in response['error']:
-            raise ModelLoadingException()
+            time_estimate = float(response['estimated_time'])
+            raise ModelLoadingException(time_estimate)
         raise ModelQueryException(response['error'])
 
     classifications = response[0]
