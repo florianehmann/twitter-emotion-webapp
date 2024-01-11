@@ -1,5 +1,7 @@
 """Functionality of the query page"""
 
+from math import ceil
+
 from flask import request, current_app, flash, render_template
 from markupsafe import Markup
 import plotly
@@ -37,9 +39,11 @@ def process_user_request(form, common_kwargs):
         current_app.logger.error(f"Language Model Error: {e}")
         flash(f"There was an error with the language model: {e}")
 
-    except ModelLoadingException:
-        current_app.logger.warning("Language model currently loading")
-        flash("Model is currently loading, try again in 20 seconds.")
+    except ModelLoadingException as e:
+        rounded_time_estimate = ceil(e.time_estimate / 5) * 5
+        common_kwargs['submit_timeout'] = rounded_time_estimate
+        current_app.logger.warning(f"Language model currently loading. Approx {e.time_estimate:.1f}s remaining")
+        flash(f"The AI model is currently booting up. Results loading in {rounded_time_estimate} seconds...")
 
     return render
 

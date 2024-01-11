@@ -23,4 +23,4 @@ class QueryForm(FlaskForm):
         ('fear', 'Fear'),
         ('surprise', 'Surprise'),
     ], label='What would you say? (optional)')
-    submit = SubmitField('Analyze!')
+    submit_button = SubmitField('Analyze!')
