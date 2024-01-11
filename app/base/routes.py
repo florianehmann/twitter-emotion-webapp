@@ -28,4 +28,10 @@ def index():
 @bp.route('/privacy')
 def privacy():
     """Privacy statement of the site"""
-    return render_template('base/privacy.html')
+    return render_template('base/privacy.html', title='Feel the Tweet - Privacy Statement')
+
+
+@bp.route('/about')
+def about():
+    """About the webapp"""
+    return render_template('base/about.html', title='Feel the Tweet - About')

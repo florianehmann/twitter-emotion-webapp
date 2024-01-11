@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<h1>About This Site</h1>
+
+<p align="justify">
+  Here you can ask an AI model to guess the emotion in a tweet!
+</p>
+
+<p align="justify">
+  I created this site as a side project while playing around with AI models for Natural Language Processing (NLP). You can look up its source code
+  <a href="{{ config['GITHUB_URL'] }}">here</a>
+  on GitHub!
+  The source code for the creation and testing of the AI models themselves is also available
+  <a href="https://github.com/florianehmann/twitter-emotion">here</a>
+  on GitHub and the models can be downloaded and used on my
+  <a href="https://huggingface.co/florianehmann">HuggingFace profile</a>.
+</p>
+
+<h2>How it Works</h2>
+
+<p align="justify">
+  When you enter a tweet in the text field on the <a href="{{ url_for('base.index') }}">main site</a> and hit the button, the site packs it up as a request and sends it to the AI model that is hosted at HuggingFace and accessible through the HuggingFace Inference API.
+  The response is then opened and visualized for convenience.
+</p>
+
+<p align="justify">
+  I created the AI model fo this site by using the freely available base model
+  <a href="https://huggingface.co/xlm-roberta-base">XLM-RoBERTa</a>
+  (XLM-R for short) and adding a custom classification head to it. This classification head is a simple neural network that takes the hidden states created by the base model and outputs scores for each of the emotion categories. I trained this compound model on
+  <a href="https://huggingface.co/datasets/dair-ai/emotion">this</a>
+  freely available dataset of tens of thousands of tweets that have been labeled by humans.
+</p>
+
+<h2>How It Understands Multiple Languages</h2>
+
+<p align="justify">
+  A pretty neat feature of this model is the fact that it works on tweets that aren't in English, even though it was exclusively trained on English tweets.
+  This is possible because in pre-training the XLM-R base model is trained on data in 100 different languages and gains an understanding of all of them.
+  When we feed a tweet in one of those languages into XLM-R, it passes multiple layers and is gradually transformed into a different representation by the model.
+  The model does this in a way that this new representation depends strongly on the meaning of the input tweet, but not on the language of the input tweet; the model extracts the meaning of the text.
+  Because this new representation, or hidden state, represents the meaning of the text with the details of the tweet's original language stripped away, we can use one common classification head for tweets of all languages that XLM-R understands.
+</p>
+
+<p align="justify">
+  This approach called <i>zero-shot cross-lingual transfer</i>, is not perfect but provides respectable results without requiring any training data in multiple languages.
+</p>
+
+{% endblock %}

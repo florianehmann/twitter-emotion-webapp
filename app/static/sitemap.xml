@@ -11,6 +11,10 @@
         <priority>0.5</priority>
     </url>
     <url>
+        <loc>https://feelthetweet.com/about</loc>
+        <priority>0.5</priority>
+    </url>
+    <url>
         <loc>https://feelthetweet.com/privacy</loc>
         <priority>0.0</priority>
     </url>
